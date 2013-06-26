@@ -1,10 +1,16 @@
 define(['regulargeoboard'], function (RegularGeoboard) {
     'use strict';
 
-    function SquareGeoboard() {
-        RegularGeoboard.call(this);
-        this.angleBetweenAxes = Math.PI/2;
-    }
+    var SquareGeoboard = RegularGeoboard.extend({
+
+        ctor: function () {
+
+        	this._super();
+            this.angleBetweenAxes = Math.PI/2;
+
+        }
+
+    });
 
     return SquareGeoboard;
 

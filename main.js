@@ -47,15 +47,6 @@ define(['cocos2d', 'qlayer', 'angle', 'band', 'constants', 'geoboard', 'squarege
             clc.addChild(background);
             this.addChild(clc,0);
 
-
-            var setupInheritances = function() {
-                inherits(RegularGeoboard, Geoboard);
-                inherits(SquareGeoboard, RegularGeoboard);
-                inherits(TriangleGeoboard, RegularGeoboard);
-                inherits(CircleGeoboard, Geoboard);
-            }
-            setupInheritances();
-
             var title = new cc.Sprite();
             title.initWithFile(s_geoboard_title);
             title.setPosition(485, 700);

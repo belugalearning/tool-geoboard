@@ -3,52 +3,56 @@ define(['band', 'constants'], function (Band, constants) {
 
     var PropertyDisplays = constants['PropertyDisplays'];
 
-    function Geoboard() {
-        this.background = new cc.Node();
-        this.background.boundary = cc.RectMake(-300, -250, 600, 520);
-        this.pins = new Array();
-        this.bands = new Array();
-        this.movingBand = null;
+    var Geoboard = cc.Class.extend({
 
-        this.angleDisplay = "none";
-        this.sideDisplay = "none";
+        ctor: function () {
 
-        this.pinNode = new cc.Node();
-        this.background.addChild(this.pinNode);
+            this.background = new cc.Node();
+            this.background.boundary = cc.RectMake(-300, -250, 600, 520);
+            this.pins = new Array();
+            this.bands = new Array();
+            this.movingBand = null;
 
-        this.bandColours = [];
-        var rgbValues = [75, 160, 245];
-        for (var i = 0; i < 3; i++) {
-            for (var j = 0; j < 3; j++) {
-                for (var k = 0; k < 3; k++) {
-                    this.bandColours.push(cc.c3b(rgbValues[i], rgbValues[j], rgbValues[k]));
+            this.angleDisplay = "none";
+            this.sideDisplay = "none";
+
+            this.pinNode = new cc.Node();
+            this.background.addChild(this.pinNode);
+
+            this.bandColours = [];
+            var rgbValues = [75, 160, 245];
+            for (var i = 0; i < 3; i++) {
+                for (var j = 0; j < 3; j++) {
+                    for (var k = 0; k < 3; k++) {
+                        this.bandColours.push(cc.c3b(rgbValues[i], rgbValues[j], rgbValues[k]));
+                    };
                 };
             };
-        };
+        },
 
-        this.addPinsToBackground = function() {
+        addPinsToBackground: function() {
             for (var i = 0; i < this.pins.length; i++) {
                 var pin = this.pins[i];
                 this.pinNode.addChild(this.pins[i].sprite);
             };
-        }
+        },
 
-        this.addBand = function(band) {
+        addBand: function(band) {
             this.bands.push(band);
             this.background.addChild(band.bandNode);
             this.selectBand(band);
-        }
+        },
 
-        this.processTouch = function(touchLocation) {
+        processTouch: function(touchLocation) {
             for (var i = 0; i < this.bands.length; i++) {
                 this.bands[i].processTouch(touchLocation);
                 if (this.movingBand !== null) {
                     break;
                 };
             };
-        }
+        },
 
-        this.processMove = function(touchLocation) {
+        processMove: function(touchLocation) {
             if (this.movingBand !== null) {
                 var touchLocationRelativeToBackground = this.background.convertToNodeSpace(touchLocation);
                 this.movingBand.processMove(touchLocationRelativeToBackground);
@@ -57,9 +61,9 @@ define(['band', 'constants'], function (Band, constants) {
                     pin.highlightPin(pin.sprite.touchClose(touchLocation));
                 };
             }
-        }
+        },
 
-        this.processEnd = function(touchLocation) {
+        processEnd: function(touchLocation) {
             if (this.movingBand !== null) {
                 var placedOnPin = false;
                 for (var i = 0; i < this.pins.length; i++) {
@@ -83,32 +87,32 @@ define(['band', 'constants'], function (Band, constants) {
             };
             this.setAllDrawAngles();
             this.movingBand = null;
-        }
+        },
 
-        this.setMovingBand = function(band) {
+        setMovingBand: function(band) {
             this.movingBand = band;
             this.selectBand(band);
-        }
+        },
 
-        this.setAllDrawAngles = function() {
+        setAllDrawAngles: function() {
             for (var i = 0; i < this.bands.length; i++) {
                 var band = this.bands[i];
                 for (var j = 0; j < band.angles.length; j++) {
                     band.angles[j].setDrawAngle();
                 };
             };
-        }
+        },
 
-        this.newBand = function() {
+        newBand: function() {
             var firstPin = this.pins[0];
             var secondPin = this.pins[1];
             var Band = require('band');
             var band = new Band();
             band.setupWithGeoboardAndPins(this, [firstPin, secondPin]);
             return band;
-        }
+        },
 
-        this.removeBand = function(index) {
+        removeBand: function(index) {
             var band = this.bands[index];
             band.bandNode.removeFromParent();
             this.bands.splice(index, 1);
@@ -128,20 +132,20 @@ define(['band', 'constants'], function (Band, constants) {
             this.groupSameSideLengths();
             this.groupParallelSides();
 
-        }
+        },
 
-        this.selectNoBand = function() {
+        selectNoBand: function() {
             this.setPropertyIndicatorsForSelectedBand();
             this.layer.movePropertyButtonsOffscreen();
-        }
+        },
 
-        this.removeSelectedBand = function() {
+        removeSelectedBand: function() {
             if (this.bands.length > 0) {
                 this.removeBand(0);
             };
-        }
+        },
 
-        this.selectBand = function(band) {
+        selectBand: function(band) {
             var previousBand;
             if (this.bands.length > 1) {
                 previousBand = this.bands[0];
@@ -157,29 +161,29 @@ define(['band', 'constants'], function (Band, constants) {
             if (this.layer.propertyDisplay === PropertyDisplays.AREA) {
                 this.displayArea(true);
             };
-        }
+        },
 
-        this.selectBandFromButton = function(sender) {
+        selectBandFromButton: function(sender) {
             var band = sender.band;
             this.selectBand(band);        
-        }
+        },
 
-        this.setBandsZIndexToPriorityOrder = function() {
+        setBandsZIndexToPriorityOrder: function() {
             for (var i = 1; i <= this.bands.length; i++) {
                 var index = this.bands.length - i;
                 var band = this.bands[index];
                 this.background.reorderChild(band.bandNode, i);
             };
-        }
+        },
 
-        this.setAllProperties = function() {
+        setAllProperties: function() {
             this.setPropertyIndicatorsForSelectedBand();
             this.groupSameAngles();
             this.groupSameSideLengths();
             this.groupParallelSides();
-        }
+        },
 
-        this.setPropertyIndicatorsForSelectedBand = function() {
+        setPropertyIndicatorsForSelectedBand: function() {
             if (this.bands.length > 0) {
                 var band = this.bands[0];
                 this.layer.setRegularIndicatorWith(band.getRegular());
@@ -192,36 +196,39 @@ define(['band', 'constants'], function (Band, constants) {
                 this.layer.setPerimeterIndicatorWith(null);
                 this.layer.setAreaIndicatorWith(null);
             };
-        }
+        },
 
-        /*this.toggleAngleDisplay = function(string) {
+/*
+        toggleAngleDisplay = function(string) {
             if (this.angleDisplay === string) {
                 this.angleDisplay = "none"
             } else {
                 this.angleDisplay = string;
             };
             this.setupAngleDisplay();
-        }*/
+        },
+*/
 
-        this.displayAngles = function(visible) {
+        displayAngles: function(visible) {
             for (var i = 0; i < this.bands.length; i++) {
                 var band = this.bands[i];
                 band.angleNode.setVisible(visible);
                 band.displaySameAngles(false);
             };
             this.setAllDrawAngles();
-        };
+        },
 
-        this.displaySameAngles = function(visible) {
+        displaySameAngles: function(visible) {
             for (var i = 0; i < this.bands.length; i++) {
                 var band = this.bands[i];
                 band.angleNode.setVisible(visible);
                 band.displaySameAngles(true);
             };
             this.setAllDrawAngles();
-        };
+        },
 
-    /*    this.setupAngleDisplay = function() {
+/*
+        setupAngleDisplay = function() {
             for (var i = 0; i < this.bands.length; i++) {
                 var band = this.bands[i];
                 if (this.angleDisplay === "angleValues") {
@@ -238,39 +245,40 @@ define(['band', 'constants'], function (Band, constants) {
                 };
             };
             this.setAllDrawAngles();
-        }
-    */
-    /*    this.toggleSideDisplay = function(string) {
+        },
+*/
+/*
+        toggleSideDisplay = function(string) {
             if (this.sideDisplay === string) {
                 this.sideDisplay = "none";
             } else {
                 this.sideDisplay = string;
             };
             this.setupSideDisplay();
-        }
-    */
-        this.displaySideLengths = function(visible) {
+        },
+*/
+        displaySideLengths: function(visible) {
             for (var i = 0; i < this.bands.length; i++) {
                 var band = this.bands[i];
                 band.sideLengthsNode.setVisible(visible);
             };
-        }
+        },
 
-        this.displaySameSideLengths = function(visible) {
+        displaySameSideLengths: function(visible) {
             for (var i = 0; i < this.bands.length; i++) {
                 var band = this.bands[i];
                 band.sameSideLengthNotchesVisible(visible);
             };
-        }
+        },
 
-        this.displayParallelSides = function(visible) {
+        displayParallelSides: function(visible) {
             for (var i = 0; i < this.bands.length; i++) {
                 var band = this.bands[i];
                 band.parallelSideArrowsVisible(visible);
             };
-        }
+        },
 
-        this.displayArea = function(visible) {
+        displayArea: function(visible) {
             if (this.bands.length > 0) {
                 var band = this.bands[0];
                 band.areaNode.setVisible(visible);
@@ -278,9 +286,10 @@ define(['band', 'constants'], function (Band, constants) {
                     this.bands[i].areaNode.setVisible(false);
                 };
             };
-        };
+        },
 
-    /*    this.setupSideDisplay = function() {
+/*
+        setupSideDisplay = function() {
             for (var i = 0; i < this.bands.length; i++) {
                 var band = this.bands[i];
                 band.sideLengthsNode.setVisible(false);
@@ -295,9 +304,9 @@ define(['band', 'constants'], function (Band, constants) {
                     band.parallelSideArrowsVisible(true);
                 }
             };
-        }
-    */
-        this.groupSameAngles = function() {
+        },
+*/
+        groupSameAngles: function() {
             var angles = [];
             for (var i = 0; i < this.bands.length; i++) {
                 var band = this.bands[i];
@@ -329,9 +338,9 @@ define(['band', 'constants'], function (Band, constants) {
                 };
             }
 
-        }
+        },
 
-        this.groupSameSideLengths = function() {
+        groupSameSideLengths: function() {
             var sides = [];
             for (var i = 0; i < this.bands.length; i++) {
                 var band = this.bands[i]
@@ -366,9 +375,9 @@ define(['band', 'constants'], function (Band, constants) {
                     sides.splice(index, 1);
                 };
             }
-        }
+        },
 
-        this.groupParallelSides = function() {
+        groupParallelSides: function() {
             var sides = [];
             for (var i = 0; i < this.bands.length; i++) {
                 var band = this.bands[i];
@@ -414,7 +423,7 @@ define(['band', 'constants'], function (Band, constants) {
                 };
             }
         }
-    }
+    });
 
     return Geoboard;
 

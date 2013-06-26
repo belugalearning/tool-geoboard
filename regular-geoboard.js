@@ -1,13 +1,17 @@
 define(['geoboard', 'pin'], function (Geoboard, Pin) {
     'use strict';
 
-    function RegularGeoboard() {
-        Geoboard.call(this);
+    var RegularGeoboard = Geoboard.extend({
 
-        this.distanceBetweenPins = 70;
-        this.unitDistance = this.distanceBetweenPins;
+        ctor: function () {
 
-        this.setupPins = function () {
+            this._super();
+            this.distanceBetweenPins = 70;
+            this.unitDistance = this.distanceBetweenPins;
+
+        },
+
+        setupPins: function () {
             var firstCoordinate = 0;
             var secondCoordinate = 0;
             this.rowHeight = Math.sin(this.angleBetweenAxes);
@@ -31,16 +35,16 @@ define(['geoboard', 'pin'], function (Geoboard, Pin) {
             }
 
             this.addPinsToBackground();
-        };
+        },
 
-        this.pinPosition = function(i, j) {
+        pinPosition: function(i, j) {
             var xValue = this.background.boundary.origin.x + this.distanceBetweenPins * (i + this.rowOffset * j);
             var yValue = this.background.boundary.origin.y + this.distanceBetweenPins * this.rowHeight * j;
             var pinPosition = cc.p(xValue, yValue);
             return pinPosition;
-        };
+        },
 
-        this.positionOnBackground = function(pinPosition) {
+        positionOnBackground: function(pinPosition) {
             var xRelativeToBackground = pinPosition.x + this.background.boundary.origin.x;
             var yRelativeToBackground = pinPosition.y + this.background.boundary.origin.y;
             var pinPositionRelativeToBackground= cc.p(xRelativeToBackground, yRelativeToBackground);
@@ -48,9 +52,9 @@ define(['geoboard', 'pin'], function (Geoboard, Pin) {
             var boundary = this.background.boundary;
             var onBackground = cc.rectContainsPoint(boundary, pinPosition);
             return onBackground;
-        };
+        }
 
-    }
+    });
 
     return RegularGeoboard;
 

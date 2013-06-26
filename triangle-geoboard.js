@@ -1,11 +1,15 @@
 define(['regulargeoboard'], function (RegularGeoboard) {
     'use strict';
 
-    function TriangleGeoboard() {
-        RegularGeoboard.call(this);
-        this.angleBetweenAxes = Math.PI/3;
-    }
+    var TriangleGeoboard = RegularGeoboard.extend({
 
+        ctor: function () {
+
+        	this._super();
+            this.angleBetweenAxes = Math.PI/3;
+        }
+
+    });
 
     return TriangleGeoboard;
 

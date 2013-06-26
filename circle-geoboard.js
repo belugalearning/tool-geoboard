@@ -1,16 +1,21 @@
 define(['geoboard', 'pin'], function (Geoboard, Pin) {
     'use strict';
 
-    function CircleGeoboard (numberOfPins, includeCentre) {
-        Geoboard.call(this);
-        this.radius = 250;
-        this.numberOfPins = numberOfPins;
-        this.includeCentre = includeCentre;
-        var contentSize = this.background.getContentSize();
-        this.centreOfCircle = cc.p(contentSize.width/2, contentSize.height/2);
-        this.unitDistance = this.radius;
+    var CircleGeoboard = Geoboard.extend({
 
-        this.setupPins = function() {
+        ctor: function (numberOfPins, includeCentre) {
+
+            this._super();
+            this.radius = 250;
+            this.numberOfPins = numberOfPins;
+            this.includeCentre = includeCentre;
+            var contentSize = this.background.getContentSize();
+            this.centreOfCircle = cc.p(contentSize.width/2, contentSize.height/2);
+            this.unitDistance = this.radius;
+
+        },
+
+        setupPins: function() {
             if (this.includeCentre) {
                 var pin = new Pin();
                 pin.circlePinIndex = 0;
@@ -24,24 +29,24 @@ define(['geoboard', 'pin'], function (Geoboard, Pin) {
                 this.pins.push(pin);
             }
             this.addPinsToBackground();
-        }
+        },
 
-        this.edgePinPosition = function(index) {
+        edgePinPosition: function(index) {
             var xPosition = this.centreOfCircle.x + this.radius * Math.sin(2 * Math.PI * index/this.numberOfPins);
             var yPosition = this.centreOfCircle.y + this.radius * Math.cos(2 * Math.PI * index/this.numberOfPins);
             return cc.p(xPosition, yPosition);
-        }
+        },
 
-        this.addCentrePin = function() {
+        addCentrePin: function() {
             this.includeCentre = true;
             var pin = new Pin();
             pin.circlePinIndex = 0;
             pin.sprite.setPosition(this.centreOfCircle)
             this.background.addChild(pin.sprite);
             this.pins.splice(0, 0, pin);
-        }
+        },
 
-        this.removeCentrePin = function() {
+        removeCentrePin: function() {
             this.includeCentre = false;
             var pinToDelete;
             for (var i = 0; i < this.pins.length; i++) {
@@ -54,9 +59,9 @@ define(['geoboard', 'pin'], function (Geoboard, Pin) {
             };
             this.removeDeletedPinFromBands(pinToDelete);
             pinToDelete.sprite.removeFromParent();
-        }
+        },
 
-        this.removeDeletedPinFromBands = function(pinToDelete) {
+        removeDeletedPinFromBands: function(pinToDelete) {
             for (var i = 0; i < this.bands.length; i++) {
                 var band = this.bands[i];
                 for (var j = band.pins.length - 1; j >= 0; j--) {
@@ -73,9 +78,9 @@ define(['geoboard', 'pin'], function (Geoboard, Pin) {
                 band.setupSideLengths();
                 band.setDrawArea();
             };
-        }
+        },
 
-        this.addEdgePin = function() {
+        addEdgePin: function() {
             this.numberOfPins++;
             var pin = new Pin();
             pin.circlePinIndex = this.numberOfPins;
@@ -95,9 +100,9 @@ define(['geoboard', 'pin'], function (Geoboard, Pin) {
             this.groupSameSideLengths();
             this.groupParallelSides();
             this.setPropertyIndicatorsForSelectedBand();
-        }
+        },
 
-        this.removeEdgePin = function() {
+        removeEdgePin: function() {
             var pinToDelete;
             for (var i = 0; i < this.pins.length; i++) {
                 var pin = this.pins[i];
@@ -119,9 +124,9 @@ define(['geoboard', 'pin'], function (Geoboard, Pin) {
                 this.bands[i].dirtyProperties = true;
                 this.bands[i].setDrawArea();
             };
-        }
+        },
 
-        this.positionEdgePins = function() {
+        positionEdgePins: function() {
             for (var i = 0; i < this.pins.length; i++) {
                 var pin = this.pins[i];
                 var circleIndex = pin.circlePinIndex;
@@ -131,7 +136,7 @@ define(['geoboard', 'pin'], function (Geoboard, Pin) {
                 }; 
             };
         }
-    }
+    });
 
     return CircleGeoboard;
 
