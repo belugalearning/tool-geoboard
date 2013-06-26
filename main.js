@@ -1,6 +1,25 @@
+require.config({
+    paths: {
+        'angle': '../../tools/geoboard/angle',
+        'bandpart': '../../tools/geoboard/band-part',
+        'band': '../../tools/geoboard/band',
+        'constants': '../../tools/geoboard/constants',
+        'geoboard': '../../tools/geoboard/geoboard',
+        'regulargeoboard': '../../tools/geoboard/regular-geoboard',
+        'squaregeoboard': '../../tools/geoboard/square-geoboard',
+        'trianglegeoboard': '../../tools/geoboard/triangle-geoboard',
+        'circlegeoboard': '../../tools/geoboard/circle-geoboard',
+        'pin': '../../tools/geoboard/pin',
+        'utils': '../../tools/geoboard/utils'
+    }
+});
 
+define(['cocos2d', 'qlayer', 'angle', 'band', 'constants', 'geoboard', 'squaregeoboard', 'regulargeoboard', 'trianglegeoboard', 'circlegeoboard', 'utils'], function(cocos2d, QLayer, Angle, Band, constants, Geoboard, SquareGeoboard, RegularGeoboard, TriangleGeoboard, CircleGeoboard) {
+    'use strict';
 
-    window.ToolLayer = cc.Layer.extend({
+    var PropertyDisplays = constants['PropertyDisplays'];
+
+    var ToolLayer = cc.Layer.extend({
 
         titleLabel:null,
         clc:null,
@@ -11,7 +30,8 @@
         circleIncludeCentre:true,
         maxNumberOfBands:9,
 
-        init:function () {
+        init: function () {
+
             this._super();
 
             this.setTouchEnabled(true);
@@ -20,12 +40,20 @@
 
             cc.Director.getInstance().setDisplayStats(false);
 
-            clc=cc.Layer.create();
+            var clc = cc.Layer.create();
             var background = new cc.Sprite();
             background.initWithFile(s_deep_water_background);
             background.setPosition(size.width/2, size.height/2);
             clc.addChild(background);
             this.addChild(clc,0);
+
+
+            var setupInheritances = function() {
+                inherits(RegularGeoboard, Geoboard);
+                inherits(SquareGeoboard, RegularGeoboard);
+                inherits(TriangleGeoboard, RegularGeoboard);
+                inherits(CircleGeoboard, Geoboard);
+            }
             setupInheritances();
 
             var title = new cc.Sprite();
@@ -55,7 +83,7 @@
             circleGeoboardButton.setPosition(this.circleGeoboardButtonBase.getAnchorPointInPoints());
             this.circleGeoboardButtonBase.addChild(circleGeoboardButton);
             this.circleGeoboardButtonBase.setPosition(-15, -200);
-           
+
             var geoboardTypesMenu = new cc.Menu.create(this.squareGeoboardButtonBase, this.triangleGeoboardButtonBase, this.circleGeoboardButtonBase);
             geoboardTypesMenu.setPosition(this.squareGeoboardButtonBase.getContentSize().width/2, 580);
             this.addChild(geoboardTypesMenu);
@@ -538,5 +566,43 @@
             };
         },
 
-        emptyFunction:function() {},
+        emptyFunction:function() {}
     });
+
+    ToolLayer.create = function () {
+        var sg = new ToolLayer();
+        if (sg && sg.init(cc.c4b(255, 255, 255, 255))) {
+            return sg;
+        }
+        return null;
+    };
+
+    ToolLayer.scene = function () {
+        var scene = cc.Scene.create();
+        var layer = ToolLayer.create();
+        scene.addChild(layer);
+
+        scene.layer=layer;
+
+        // scene.setMouseEnabled(true);
+        // scene.onMouseDown=function(event){cc.log("mouse down");};
+
+        scene.ql=new QLayer();
+        scene.ql.init();
+        layer.addChild(scene.ql, 99);
+
+        scene.update = function(dt) {
+            this.layer.update(dt);
+            this.ql.update(dt);
+        };
+        scene.scheduleUpdate();
+
+
+        return scene;
+    };
+
+    return {
+        'ToolLayer': ToolLayer
+    };
+
+});
