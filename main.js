@@ -12,16 +12,17 @@ require.config({
         'pin': '../../tools/geoboard/pin',
         'moving-pin': '../../tools/geoboard/moving-pin',
         'noshadow-pin': '../../tools/geoboard/noshadow-pin',
-        'utils': '../../tools/geoboard/utils'
+        'utils': '../../tools/geoboard/utils',
+        'toollayer': '../../tools/common/toollayer'
     }
 });
 
-define(['cocos2d', 'qlayer', 'angle', 'band', 'constants', 'geoboard', 'squaregeoboard', 'regulargeoboard', 'trianglegeoboard', 'circlegeoboard', 'utils'], function(cocos2d, QLayer, Angle, Band, constants, Geoboard, SquareGeoboard, RegularGeoboard, TriangleGeoboard, CircleGeoboard) {
+define(['exports', 'cocos2d', 'toollayer', 'qlayer', 'angle', 'band', 'constants', 'geoboard', 'squaregeoboard', 'regulargeoboard', 'trianglegeoboard', 'circlegeoboard', 'utils'], function(exports, cocos2d, ToolLayer, QLayer, Angle, Band, constants, Geoboard, SquareGeoboard, RegularGeoboard, TriangleGeoboard, CircleGeoboard) {
     'use strict';
 
     var PropertyDisplays = constants['PropertyDisplays'];
 
-    var ToolLayer = cc.Layer.extend({
+    var Tool = ToolLayer.extend({
 
         titleLabel:null,
         clc:null,
@@ -562,40 +563,6 @@ define(['cocos2d', 'qlayer', 'angle', 'band', 'constants', 'geoboard', 'squarege
         emptyFunction:function() {}
     });
 
-    ToolLayer.create = function () {
-        var sg = new ToolLayer();
-        if (sg && sg.init(cc.c4b(255, 255, 255, 255))) {
-            return sg;
-        }
-        return null;
-    };
-
-    ToolLayer.scene = function () {
-        var scene = cc.Scene.create();
-        var layer = ToolLayer.create();
-        scene.addChild(layer);
-
-        scene.layer=layer;
-
-        // scene.setMouseEnabled(true);
-        // scene.onMouseDown=function(event){cc.log("mouse down");};
-
-        scene.ql=new QLayer();
-        scene.ql.init();
-        layer.addChild(scene.ql, 99);
-
-        scene.update = function(dt) {
-            this.layer.update(dt);
-            this.ql.update(dt);
-        };
-        scene.scheduleUpdate();
-
-
-        return scene;
-    };
-
-    return {
-        'ToolLayer': ToolLayer
-    };
+    exports.ToolLayer = Tool;
 
 });
