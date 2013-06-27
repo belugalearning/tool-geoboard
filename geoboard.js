@@ -9,8 +9,8 @@ define(['band', 'constants'], function (Band, constants) {
 
             this.background = new cc.Node();
             this.background.boundary = cc.RectMake(-300, -250, 600, 520);
-            this.pins = new Array();
-            this.bands = new Array();
+            this.pins = [];
+            this.bands = [];
             this.movingBand = null;
 
             this.angleDisplay = "none";

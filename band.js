@@ -11,9 +11,9 @@ define(['angle', 'bandpart', 'geoboard', 'pin', 'moving-pin', 'noshadow-pin', 'c
         this.areaNode = new cc.DrawNode();
         this.areaNode.setZOrder(-1);
         this.bandNode.addChild(this.areaNode);
-        this.bandParts = new Array();
+        this.bandParts = [];
         this.movingPin = null;
-        this.sideLengthsLabels = new Array();
+        this.sideLengthsLabels = [];
         this.singleBandPart = null;
 
         this.dirtyProperties = true;
@@ -35,7 +35,7 @@ define(['angle', 'bandpart', 'geoboard', 'pin', 'moving-pin', 'noshadow-pin', 'c
         this.setupWithGeoboardAndPins = function(geoboard, pins) {
             this.geoboard = geoboard;
             this.pins = pins;
-            this.bandParts = new Array();
+            this.bandParts = [];
 
             var randomIndex = Math.floor(Math.random() * this.geoboard.bandColours.length);
             this.colour = this.geoboard.bandColours[randomIndex];
@@ -97,7 +97,7 @@ define(['angle', 'bandpart', 'geoboard', 'pin', 'moving-pin', 'noshadow-pin', 'c
             this.angleNode = new cc.Node();
             var angleNodeVisible = this.geoboard.angleDisplay === "none" ? false : true;
             this.angleNode.setVisible(angleNodeVisible);
-            this.angles = new Array();
+            this.angles = [];
             this.propertiesNode.addChild(this.angleNode);
             this.setupAngles();
 
@@ -106,10 +106,10 @@ define(['angle', 'bandpart', 'geoboard', 'pin', 'moving-pin', 'noshadow-pin', 'c
             this.sideLengthsNode.setVisible(false);
             this.setupSideLengths();
 
-            this.sameSideLengthNotches = new Array();
+            this.sameSideLengthNotches = [];
             this.geoboard.groupSameSideLengths()
 
-            this.parallelSideArrows = new Array();
+            this.parallelSideArrows = [];
             this.geoboard.groupParallelSides();
         }
 
@@ -225,7 +225,7 @@ define(['angle', 'bandpart', 'geoboard', 'pin', 'moving-pin', 'noshadow-pin', 'c
 
         this.cleanPins = function() {
             if (this.pins.length > 1) {
-                var repeatPinsIndexes = new Array();
+                var repeatPinsIndexes = [];
                 for (var i = 0; i < this.pins.length; i++) {
                     var currentPin = this.pins[i];
                     var nextPin = this.pins[(i+1) % this.pins.length];

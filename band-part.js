@@ -3,7 +3,7 @@ define(['pin', 'moving-pin', 'noshadow-pin'], function (Pin, MovingPin, NoShadow
 
     function BandPart() {
         this.baseNode = new cc.Node();
-        this.sprite = new cc.Sprite(); 
+        this.sprite = new cc.Sprite();
         this.sprite.initWithFile(s_bandPart);
         this.sprite.setScaleX(1.5);
         this.bandPartNode = new cc.Node();

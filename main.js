@@ -128,7 +128,7 @@ define(['cocos2d', 'qlayer', 'angle', 'band', 'constants', 'geoboard', 'squarege
             this.selectBandMenu = new cc.Menu.create();
             this.selectBandMenu.setPosition(210, 600);
             this.addChild(this.selectBandMenu);
-            this.selectBandButtons = new Array();
+            this.selectBandButtons = [];
             this.positionBandSelectButtons();
 
             this.propertyDisplay = PropertyDisplays.NONE;
