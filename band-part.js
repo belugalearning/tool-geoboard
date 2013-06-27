@@ -1,4 +1,4 @@
-define([], function () {
+define(['pin', 'moving-pin', 'noshadow-pin'], function (Pin, MovingPin, NoShadowPin) {
     'use strict';
 
     function BandPart() {
@@ -23,7 +23,7 @@ define([], function () {
             if (!(toPin instanceof MovingPin)) {
                 this.dummyEndPin = new NoShadowPin();
                 this.dummyEndPin.sprite.setZOrder(1);
-                this.baseNode.addChild(this.dummyEndPin.sprite);            
+                this.baseNode.addChild(this.dummyEndPin.sprite);         
             };
             if (!(fromPin instanceof MovingPin)) {
                 this.dummyStartPin = new NoShadowPin();

@@ -1,4 +1,4 @@
-define(['angle', 'bandpart', 'geoboard', 'pin', 'constants'], function (Angle, BandPart, Geoboard, Pin, constants) {
+define(['angle', 'bandpart', 'geoboard', 'pin', 'moving-pin', 'noshadow-pin', 'constants'], function (Angle, BandPart, Geoboard, Pin, MovingPin, NoShadowPin, constants) {
     'use strict';
 
     var PropertyDisplays = constants['PropertyDisplays'];
