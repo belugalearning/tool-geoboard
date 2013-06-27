@@ -10,6 +10,8 @@ require.config({
         'trianglegeoboard': '../../tools/geoboard/triangle-geoboard',
         'circlegeoboard': '../../tools/geoboard/circle-geoboard',
         'pin': '../../tools/geoboard/pin',
+        'moving-pin': '../../tools/geoboard/moving-pin',
+        'noshadow-pin': '../../tools/geoboard/noshadow-pin',
         'utils': '../../tools/geoboard/utils'
     }
 });
