@@ -1,4 +1,4 @@
-define([], function (Band) {
+define([], function () {
     'use strict';
 
     function Pin() {
@@ -25,15 +25,3 @@ define([], function (Band) {
     return Pin;
 
 });
-
-function MovingPin() {
-    this.sprite = new cc.Sprite();
-    this.sprite.initWithFile(s_moving_pin);
-    this.sprite.setAnchorPoint(cc.p(0.63, 0.88));
-}
-
-function NoShadowPin() {
-    this.sprite = new cc.Sprite();
-    this.sprite.initWithFile(s_pin_no_shadow);
-    this.sprite.setAnchorPoint(cc.p(0.5, 0.45));
-}
