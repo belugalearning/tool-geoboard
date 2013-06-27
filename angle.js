@@ -1,4 +1,4 @@
-define([], function () {
+define(['cocos2d'], function (cc) {
     'use strict';
 
     var Angle = cc.DrawNode.extend({
