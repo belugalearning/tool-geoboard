@@ -617,10 +617,10 @@ define(['exports', 'underscore', 'cocos2d', 'toollayer', 'qlayer', 'angle', 'ban
             _.each(controls, function (v, k) {
                 var control = self.getControl(k);
                 if (control) {
-                    this[key].setEnabled(v.enabled || false);
-                    this[key].setOpacity(v.opacity || 0);
+                    control.setEnabled(v.enabled || false);
+                    control.setOpacity(v.opacity || 0);
                     if (v.set) {
-                        this[key].click();
+                        control.click();
                     }
                 }
             });
