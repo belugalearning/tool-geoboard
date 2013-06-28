@@ -463,7 +463,7 @@ define(['exports', 'cocos2d', 'toollayer', 'qlayer', 'angle', 'band', 'constants
                 if (i < numberOfButtons) {
                     bandSelectButton = this.selectBandButtons[i];
                 } else {
-                    bandSelectButton = cc.MenuItemImage.create(s_empty_select_band_button, s_empty_select_band_button, 'emptyFunction', this);
+                    bandSelectButton = cc.MenuItemImage.create(s_empty_select_band_button, s_empty_select_band_button, 'noop', this);
                 };
                 bandSelectButton.selectedSprite = null;
                 this.selectBandMenu.addChild(bandSelectButton);
