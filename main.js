@@ -614,11 +614,24 @@ define(['exports', 'underscore', 'cocos2d', 'toollayer', 'qlayer', 'angle', 'ban
 
             var controls = question.toolConfig.controls;
 
+            function recursiveApply (control, state) {
+                if (state.hasOwnProperty('enabled') && typeof control.setEnabled === 'function') {
+                    control.setEnabled(state.enabled || false);
+                }
+                if (state.hasOwnProperty('opacity') && typeof control.setOpacity === 'function') {
+                    control.setOpacity(state.opacity || 0);
+                }
+                if (control._children) {
+                    _.each(control._children, function (child) {
+                        recursiveApply(child, state);
+                    });
+                }
+            }
+
             _.each(controls, function (v, k) {
                 var control = self.getControl(k);
                 if (control) {
-                    control.setEnabled(v.enabled || false);
-                    control.setOpacity(v.opacity || 0);
+                    recursiveApply(control, v);
                     if (v.set) {
                         control.click();
                     }
