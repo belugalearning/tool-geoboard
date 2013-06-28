@@ -17,10 +17,11 @@ require.config({
     }
 });
 
-define(['exports', 'cocos2d', 'toollayer', 'qlayer', 'angle', 'band', 'constants', 'geoboard', 'squaregeoboard', 'regulargeoboard', 'trianglegeoboard', 'circlegeoboard', 'utils'], function(exports, cocos2d, ToolLayer, QLayer, Angle, Band, constants, Geoboard, SquareGeoboard, RegularGeoboard, TriangleGeoboard, CircleGeoboard) {
+define(['exports', 'underscore', 'cocos2d', 'toollayer', 'qlayer', 'angle', 'band', 'constants', 'geoboard', 'squaregeoboard', 'regulargeoboard', 'trianglegeoboard', 'circlegeoboard', 'utils'], function(exports, _, cocos2d, ToolLayer, QLayer, Angle, Band, constants, Geoboard, SquareGeoboard, RegularGeoboard, TriangleGeoboard, CircleGeoboard) {
     'use strict';
 
     var PropertyDisplays = constants['PropertyDisplays'];
+    var GeoboardTypes = constants['GeoboardTypes'];
 
     var Tool = ToolLayer.extend({
 
@@ -58,28 +59,31 @@ define(['exports', 'cocos2d', 'toollayer', 'qlayer', 'angle', 'band', 'constants
             this.geoboard = new SquareGeoboard();
             this.setupGeoboard();
 
-            this.squareGeoboardButtonBase = new cc.MenuItemImage.create(s_square_geoboard_button_base, s_square_geoboard_button_base, 'squareGeoboardTapped', this);
+            var squareGeoboardButtonBase = new cc.MenuItemImage.create(s_square_geoboard_button_base, s_square_geoboard_button_base, 'squareGeoboardTapped', this);
             var squareGeoboardButton = new cc.Sprite();
             squareGeoboardButton.initWithFile(s_square_geoboard_button);
-            squareGeoboardButton.setPosition(this.squareGeoboardButtonBase.getAnchorPointInPoints());
-            this.squareGeoboardButtonBase.addChild(squareGeoboardButton);
+            squareGeoboardButton.setPosition(squareGeoboardButtonBase.getAnchorPointInPoints());
+            squareGeoboardButtonBase.addChild(squareGeoboardButton);
+            this.registerControl(constants.BOARD_BUTTON_PREFIX + 'squareGeoboardButton', squareGeoboardButtonBase);
 
-            this.triangleGeoboardButtonBase = new cc.MenuItemImage.create(s_triangle_geoboard_button_base, s_triangle_geoboard_button_base, 'triangleGeoboardTapped', this);
+            var triangleGeoboardButtonBase = new cc.MenuItemImage.create(s_triangle_geoboard_button_base, s_triangle_geoboard_button_base, 'triangleGeoboardTapped', this);
             var triangleGeoboardButton = new cc.Sprite();
             triangleGeoboardButton.initWithFile(s_triangle_geoboard_button);
-            triangleGeoboardButton.setPosition(this.triangleGeoboardButtonBase.getAnchorPointInPoints());
-            this.triangleGeoboardButtonBase.addChild(triangleGeoboardButton);
-            this.triangleGeoboardButtonBase.setPosition(-15, -100);
+            triangleGeoboardButton.setPosition(triangleGeoboardButtonBase.getAnchorPointInPoints());
+            triangleGeoboardButtonBase.addChild(triangleGeoboardButton);
+            triangleGeoboardButtonBase.setPosition(-15, -100);
+            this.registerControl(constants.BOARD_BUTTON_PREFIX + 'triangleGeoboardButton', triangleGeoboardButtonBase);
 
-            this.circleGeoboardButtonBase = new cc.MenuItemImage.create(s_circle_geoboard_button_base, s_circle_geoboard_button_base, 'circleGeoboardTapped', this);
+            var circleGeoboardButtonBase = new cc.MenuItemImage.create(s_circle_geoboard_button_base, s_circle_geoboard_button_base, 'circleGeoboardTapped', this);
             var circleGeoboardButton = new cc.Sprite();
             circleGeoboardButton.initWithFile(s_circle_geoboard_button);
-            circleGeoboardButton.setPosition(this.circleGeoboardButtonBase.getAnchorPointInPoints());
-            this.circleGeoboardButtonBase.addChild(circleGeoboardButton);
-            this.circleGeoboardButtonBase.setPosition(-15, -200);
+            circleGeoboardButton.setPosition(circleGeoboardButtonBase.getAnchorPointInPoints());
+            circleGeoboardButtonBase.addChild(circleGeoboardButton);
+            circleGeoboardButtonBase.setPosition(-15, -200);
+            this.registerControl(constants.BOARD_BUTTON_PREFIX + 'circleGeoboardButton', circleGeoboardButtonBase);
 
-            var geoboardTypesMenu = new cc.Menu.create(this.squareGeoboardButtonBase, this.triangleGeoboardButtonBase, this.circleGeoboardButtonBase);
-            geoboardTypesMenu.setPosition(this.squareGeoboardButtonBase.getContentSize().width/2, 580);
+            var geoboardTypesMenu = new cc.Menu.create(squareGeoboardButtonBase, triangleGeoboardButtonBase, circleGeoboardButtonBase);
+            geoboardTypesMenu.setPosition(squareGeoboardButtonBase.getContentSize().width/2, 580);
             this.addChild(geoboardTypesMenu);
 
             var centrePinButton = new cc.MenuItemImage.create(s_centre_pin_button, s_centre_pin_button, 'centrePinTapped', this);
@@ -116,6 +120,7 @@ define(['exports', 'cocos2d', 'toollayer', 'qlayer', 'angle', 'band', 'constants
             addBandButton.setPosition(addBandButtonBase.getAnchorPointInPoints());
             addBandButtonBase.setPosition(0, -125);
             addBandButtonBase.addChild(addBandButton);
+            this.registerControl(constants.BAND_BUTTON_PREFIX + 'addBandButtonBase', addBandButtonBase);
 
             var removeBandButtonBase = new cc.MenuItemImage.create(s_remove_band_button_base, s_remove_band_button_base, 'removeBandTapped', this);
             var removeBandButton = new cc.Sprite();
@@ -123,10 +128,12 @@ define(['exports', 'cocos2d', 'toollayer', 'qlayer', 'angle', 'band', 'constants
             removeBandButton.setPosition(removeBandButtonBase.getAnchorPointInPoints());
             removeBandButtonBase.setPosition(0, 10);
             removeBandButtonBase.addChild(removeBandButton);
+            this.registerControl(constants.BAND_BUTTON_PREFIX + 'removeBandButtonBase', addBandButtonBase);
 
             var addRemoveBandMenu = new cc.Menu.create(addBandButtonBase, removeBandButtonBase);
             addRemoveBandMenu.setPosition(addBandButtonBase.getContentSize().width/2, 270);
             this.addChild(addRemoveBandMenu);
+            this.registerControl(constants.BAND_BUTTON_PREFIX + 'addRemoveBandMenu', addRemoveBandMenu);
 
             this.selectBandMenu = new cc.Menu.create();
             this.selectBandMenu.setPosition(210, 600);
@@ -139,19 +146,53 @@ define(['exports', 'cocos2d', 'toollayer', 'qlayer', 'angle', 'band', 'constants
             this.propertyButtonsMenu = cc.Menu.create();
             this.propertyButtonsMenu.setPosition(950, 590);
             this.addChild(this.propertyButtonsMenu);
-            this.propertyButtons = [];
 
             this.buttonYPosition = 0;
 
-            this.regularButton = this.setupPropertyButton(this.regularButtonTapped, "Regular?");
-            this.shapeButton = this.setupPropertyButton(this.shapeButtonTapped, "Shape");
-            this.perimeterButton = this.setupPropertyButton(this.perimeterButtonTapped, "Perimeter");
-            this.areaButton = this.setupPropertyButton(this.areaButtonTapped, "Area");
-            this.showAngleButton = this.setupPropertyButton(this.showAnglesTapped, "Angles");
-            this.showSameAnglesButton = this.setupPropertyButton(this.showSameAnglesTapped, "Equal angles");
-            this.showSideLengthsButton = this.setupPropertyButton(this.showSideLengthsTapped, "Side lengths");
-            this.showSameSideLengthsButton = this.setupPropertyButton(this.showSameSideLengthsTapped, "Equal sides");
-            this.showParallelSidesButton = this.setupPropertyButton(this.showParallelSidesTapped, "Parallel sides");
+            this.registerControl(
+                constants.PROPERTY_BUTTON_PREFIX + 'regularButton',
+                this.setupPropertyButton(this.regularButtonTapped, "Regular?")
+            );
+
+            this.registerControl(
+                constants.PROPERTY_BUTTON_PREFIX + 'shapeButton',
+                this.setupPropertyButton(this.shapeButtonTapped, "Shape")
+            );
+
+            this.registerControl(
+                constants.PROPERTY_BUTTON_PREFIX + 'perimeterButton',
+                this.setupPropertyButton(this.perimeterButtonTapped, "Perimeter")
+            );
+
+            this.registerControl(
+                constants.PROPERTY_BUTTON_PREFIX + 'areaButton',
+                this.setupPropertyButton(this.areaButtonTapped, "Area")
+            );
+
+            this.registerControl(
+                constants.PROPERTY_BUTTON_PREFIX + 'showAngleButton',
+                this.setupPropertyButton(this.showAnglesTapped, "Angles")
+            );
+
+            this.registerControl(
+                constants.PROPERTY_BUTTON_PREFIX + 'showSameAnglesButton',
+                this.setupPropertyButton(this.showSameAnglesTapped, "Equal angles")
+            );
+
+            this.registerControl(
+                constants.PROPERTY_BUTTON_PREFIX + 'showSideLengthsButton',
+                this.setupPropertyButton(this.showSideLengthsTapped, "Side lengths")
+            );
+
+            this.registerControl(
+                constants.PROPERTY_BUTTON_PREFIX + 'showSameSideLengthsButton',
+                this.setupPropertyButton(this.showSameSideLengthsTapped, "Equal sides")
+            );
+
+            this.registerControl(
+                constants.PROPERTY_BUTTON_PREFIX + 'showParallelSidesButton',
+                this.setupPropertyButton(this.showParallelSidesTapped, "Parallel sides")
+            );
 
             return this;
         },
@@ -166,7 +207,6 @@ define(['exports', 'cocos2d', 'toollayer', 'qlayer', 'angle', 'band', 'constants
             button.setPosition(200, this.buttonYPosition);
             button.highlight = false;
             this.propertyButtonsMenu.addChild(button);
-            this.propertyButtons.push(button);
             this.buttonYPosition -= 55;
             return button;
         },
@@ -206,6 +246,7 @@ define(['exports', 'cocos2d', 'toollayer', 'qlayer', 'angle', 'band', 'constants
                 this.circleControlsNode.runAction(action);
             };
             if(!(this.geoboard instanceof SquareGeoboard)) {
+                var squareGeoboardButtonBase = this.getControl(constants.BOARD_BUTTON_PREFIX + 'squareGeoboardButton');
                 this.clearGeoboardSprites();
                 this.geoboard = new SquareGeoboard();
                 this.setupGeoboard();
@@ -213,7 +254,7 @@ define(['exports', 'cocos2d', 'toollayer', 'qlayer', 'angle', 'band', 'constants
                 this.clearBandSelectButtons();
                 this.clearPropertyButtonHighlights();
                 this.displaySelectedProperty();
-                this.selectGeoboardButton(this.squareGeoboardButtonBase);
+                this.selectGeoboardButton(squareGeoboardButtonBase);
                 this.movePropertyButtonsOffscreen();
                 this.positionBandSelectButtons();
             }
@@ -225,6 +266,7 @@ define(['exports', 'cocos2d', 'toollayer', 'qlayer', 'angle', 'band', 'constants
                 this.circleControlsNode.runAction(action);
             };
             if (!(this.geoboard instanceof TriangleGeoboard)) {
+                var triangleGeoboardButtonBase = this.getControl(constants.BOARD_BUTTON_PREFIX + 'triangleGeoboardButton');
                 this.clearGeoboardSprites();
                 this.geoboard = new TriangleGeoboard();
                 this.setupGeoboard();
@@ -232,7 +274,7 @@ define(['exports', 'cocos2d', 'toollayer', 'qlayer', 'angle', 'band', 'constants
                 this.clearBandSelectButtons();
                 this.clearPropertyButtonHighlights();
                 this.displaySelectedProperty();
-                this.selectGeoboardButton(this.triangleGeoboardButtonBase);
+                this.selectGeoboardButton(triangleGeoboardButtonBase);
                 this.movePropertyButtonsOffscreen();
                 this.positionBandSelectButtons();
             };
@@ -240,6 +282,7 @@ define(['exports', 'cocos2d', 'toollayer', 'qlayer', 'angle', 'band', 'constants
 
         circleGeoboardTapped:function() {
             if (!(this.geoboard instanceof CircleGeoboard)) {
+                var circleGeoboardButtonBase = this.getControl(constants.BOARD_BUTTON_PREFIX + 'circleGeoboardButton');
                 this.clearGeoboardSprites();
                 this.geoboard = new CircleGeoboard(this.circleNumberOfPins, this.circleIncludeCentre);
                 this.setupGeoboard();
@@ -249,14 +292,14 @@ define(['exports', 'cocos2d', 'toollayer', 'qlayer', 'angle', 'band', 'constants
                 this.displaySelectedProperty();
                 var action = cc.MoveBy.create(0.3, cc.p(0, 180));
                 this.circleControlsNode.runAction(action);
-                this.selectGeoboardButton(this.circleGeoboardButtonBase);
+                this.selectGeoboardButton(circleGeoboardButtonBase);
                 this.movePropertyButtonsOffscreen();
                 this.positionBandSelectButtons();
             };
         },
 
         selectGeoboardButton:function(base) {
-            var bases = [this.squareGeoboardButtonBase, this.triangleGeoboardButtonBase, this.circleGeoboardButtonBase];
+            var bases = this.getControls(constants.BOARD_BUTTON_PREFIX);
             for (var i = 0; i < bases.length; i++) {
                 var thisBase = bases[i];
                 var position;
@@ -337,20 +380,21 @@ define(['exports', 'cocos2d', 'toollayer', 'qlayer', 'angle', 'band', 'constants
         },
 
         selectButton:function(button) {
-            for (var i = 0; i < this.propertyButtons.length; i++) {
-                var thisButton = this.propertyButtons[i];
+            var propertyButtons = this.getControls(constants.PROPERTY_BUTTON_PREFIX);
+            _.each(propertyButtons, function (thisButton, i) {
                 if (button !== thisButton) {
                     thisButton.propertyHighlight(false);
                 } else {
                     thisButton.propertyHighlight(true);
-                };
-            };
+                }
+            });
         },
 
         deselectAllButtons:function() {
-            for (var i = 0; i < this.propertyButtons.length; i++) {
-                this.propertyButtons[i].propertyHighlight(false);
-            };
+            var propertyButtons = this.getControls(constants.PROPERTY_BUTTON_PREFIX);
+            _.each(propertyButtons, function (button, i) {
+                button.propertyHighlight(false);
+            });
         },
 
         togglePropertyDisplay:function(propertyDisplay) {
@@ -474,42 +518,46 @@ define(['exports', 'cocos2d', 'toollayer', 'qlayer', 'angle', 'band', 'constants
         },
 
         setRegularIndicatorWith:function(string) {
+            var regularButton = this.getControl(constants.PROPERTY_BUTTON_PREFIX + 'regularButton');
             if (this.propertyDisplay === PropertyDisplays.REGULAR) {
-                this.regularButton.label.setString(string);
+                regularButton.label.setString(string);
             } else {
-                this.regularButton.label.setString("Regular?");
+                regularButton.label.setString("Regular?");
             };
         },
 
         setShapeIndicatorWith:function(string) {
+            var shapeButton = this.getControl(constants.PROPERTY_BUTTON_PREFIX + 'shapeButton');
             if (this.propertyDisplay === PropertyDisplays.SHAPE) {
-                this.shapeButton.label.setString(string);
+                shapeButton.label.setString(string);
             } else {
-                this.shapeButton.label.setString("Shape");
+                shapeButton.label.setString("Shape");
             };
         },
 
         setPerimeterIndicatorWith:function(perimeter) {
+            var perimeterButton = this.getControl(constants.PROPERTY_BUTTON_PREFIX + 'perimeterButton');
             if (this.propertyDisplay === PropertyDisplays.PERIMETER) {    
                 var string = "";
                 if (perimeter !== null) {
                     string = (Math.round(perimeter * 10000)/10000).toString();
                 };
-                this.perimeterButton.label.setString(string);
+                perimeterButton.label.setString(string);
             } else {
-                this.perimeterButton.label.setString("Perimeter");
+                perimeterButton.label.setString("Perimeter");
             };
         },
 
         setAreaIndicatorWith:function(area) {
+            var areaButton = this.getControl(constants.PROPERTY_BUTTON_PREFIX + 'areaButton');
             if (this.propertyDisplay === PropertyDisplays.AREA) {        
                 var string = "";
                 if (area !== null) {
                     string = (Math.round(area * 10000)/10000).toString();
                 };
-                this.areaButton.label.setString(string);
+                areaButton.label.setString(string);
             } else {
-                this.areaButton.label.setString("Area");
+                areaButton.label.setString("Area");
             };
         },
 
@@ -522,24 +570,24 @@ define(['exports', 'cocos2d', 'toollayer', 'qlayer', 'angle', 'band', 'constants
         },
 
         movePropertyButtonsOnscreen:function() {
-            for (var i = 0; i < this.propertyButtons.length; i++) {
-                var button = this.propertyButtons[i];
+            var buttons = this.getControls(constants.PROPERTY_BUTTON_PREFIX);
+            _.each(buttons, function (button, i) {
                 var position = cc.p(0, button.getPosition().y);
                 var action = cc.MoveTo.create(0.3, position);
                 button.runAction(action);
-            };
+            });
         },
 
         movePropertyButtonsOffscreen:function() {
             this.propertyDisplay = PropertyDisplays.NONE;
             this.deselectAllButtons();
-            for (var i = 0; i < this.propertyButtons.length; i++) {
-                var button = this.propertyButtons[i];
+            var buttons = this.getControls(constants.PROPERTY_BUTTON_PREFIX);
+            _.each(buttons, function (button, i) {
                 var position = cc.p(200, button.getPosition().y);
                 var action = cc.MoveTo.create(0.3, position);
                 button.highlight = false;
                 button.runAction(action);
-            };
+            });
         },
 
         displaySelectedBand:function(band) {
@@ -560,7 +608,27 @@ define(['exports', 'cocos2d', 'toollayer', 'qlayer', 'angle', 'band', 'constants
             };
         },
 
-        emptyFunction:function() {}
+        setQuestion: function (question) {
+            var self = this;
+            this.question = question;
+
+            var controls = question.toolConfig.controls;
+
+            _.each(controls, function (v, k) {
+                var control = self.getControl(k);
+                if (control) {
+                    this[key].setEnabled(v.enabled || false);
+                    this[key].setOpacity(v.opacity || 0);
+                    if (v.set) {
+                        this[key].click();
+                    }
+                }
+            });
+        },
+
+        getState: function () {
+
+        }
     });
 
     exports.ToolLayer = Tool;
