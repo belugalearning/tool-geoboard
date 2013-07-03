@@ -12,8 +12,7 @@ require.config({
         'pin': '../../tools/geoboard/pin',
         'moving-pin': '../../tools/geoboard/moving-pin',
         'noshadow-pin': '../../tools/geoboard/noshadow-pin',
-        'utils': '../../tools/geoboard/utils',
-        'toollayer': '../../tools/common/toollayer'
+        'utils': '../../tools/geoboard/utils'
     }
 });
 
