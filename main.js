@@ -237,14 +237,14 @@ define(['exports', 'underscore', 'cocos2d', 'toollayer', 'qlayer', 'angle', 'ban
             if (touches.length > 0) {
                 var touchLocation = this.convertTouchToNodeSpace(touches[0]);
                 this.geoboard.processEnd(touchLocation);
-            };
+            }
         },
 
         squareGeoboardTapped:function() {
             if (this.geoboard instanceof CircleGeoboard) {
                 var action = cc.MoveBy.create(0.3, cc.p(0, -180));
                 this.circleControlsNode.runAction(action);
-            };
+            }
             if(!(this.geoboard instanceof SquareGeoboard)) {
                 var squareGeoboardButtonBase = this.getControl(constants.BOARD_BUTTON_PREFIX + 'squareGeoboardButton');
                 this.clearGeoboardSprites();
@@ -264,7 +264,7 @@ define(['exports', 'underscore', 'cocos2d', 'toollayer', 'qlayer', 'angle', 'ban
             if (this.geoboard instanceof CircleGeoboard) {
                 var action = cc.MoveBy.create(0.3, cc.p(0, -180));
                 this.circleControlsNode.runAction(action);
-            };
+            }
             if (!(this.geoboard instanceof TriangleGeoboard)) {
                 var triangleGeoboardButtonBase = this.getControl(constants.BOARD_BUTTON_PREFIX + 'triangleGeoboardButton');
                 this.clearGeoboardSprites();
@@ -277,7 +277,7 @@ define(['exports', 'underscore', 'cocos2d', 'toollayer', 'qlayer', 'angle', 'ban
                 this.selectGeoboardButton(triangleGeoboardButtonBase);
                 this.movePropertyButtonsOffscreen();
                 this.positionBandSelectButtons();
-            };
+            }
         },
 
         circleGeoboardTapped:function() {
@@ -295,7 +295,7 @@ define(['exports', 'underscore', 'cocos2d', 'toollayer', 'qlayer', 'angle', 'ban
                 this.selectGeoboardButton(circleGeoboardButtonBase);
                 this.movePropertyButtonsOffscreen();
                 this.positionBandSelectButtons();
-            };
+            }
         },
 
         selectGeoboardButton:function(base) {
@@ -307,10 +307,10 @@ define(['exports', 'underscore', 'cocos2d', 'toollayer', 'qlayer', 'angle', 'ban
                     position = cc.p(0, thisBase.getPosition().y);
                 } else {
                     position = cc.p(-15, thisBase.getPosition().y);
-                };
+                }
                 var action = cc.MoveTo.create(0.3, position);
                 thisBase.runAction(action);
-            };
+            }
         },
 
         centrePinTapped:function() {
@@ -320,8 +320,8 @@ define(['exports', 'underscore', 'cocos2d', 'toollayer', 'qlayer', 'angle', 'ban
                     this.geoboard.addCentrePin();
                 } else {
                     this.geoboard.removeCentrePin();
-                };
-            };
+                }
+            }
         },
 
         addPinTapped:function() {
@@ -329,7 +329,7 @@ define(['exports', 'underscore', 'cocos2d', 'toollayer', 'qlayer', 'angle', 'ban
                 if (this.circleNumberOfPins < 20) {
                     this.circleNumberOfPins++;
                     this.geoboard.addEdgePin();
-                };
+                }
                 this.numberOfPinsLabel.setString(this.circleNumberOfPins);
             }
         },
@@ -339,7 +339,7 @@ define(['exports', 'underscore', 'cocos2d', 'toollayer', 'qlayer', 'angle', 'ban
                 if (this.circleNumberOfPins > 3) {
                     this.circleNumberOfPins--;
                     this.geoboard.removeEdgePin();
-                };
+                }
                 this.numberOfPinsLabel.setString(this.circleNumberOfPins);
             }
         },
@@ -352,10 +352,10 @@ define(['exports', 'underscore', 'cocos2d', 'toollayer', 'qlayer', 'angle', 'ban
                 selectBandButton.setColor(band.colour);
                 this.addSelectBandButton(selectBandButton);
                 this.displaySelectedBand(band);
-            };
+            }
             if (this.geoboard.bands.length === 1) {
                 this.movePropertyButtonsOnscreen();
-            };
+            }
         },
 
         removeBandTapped:function() {
@@ -375,8 +375,8 @@ define(['exports', 'underscore', 'cocos2d', 'toollayer', 'qlayer', 'angle', 'ban
                     this.selectBandButtons.splice(i, 1);
                     button.removeFromParent();
                     this.positionBandSelectButtons();
-                };
-            };
+                }
+            }
         },
 
         selectButton:function(button) {
@@ -402,7 +402,7 @@ define(['exports', 'underscore', 'cocos2d', 'toollayer', 'qlayer', 'angle', 'ban
                 this.propertyDisplay = PropertyDisplays.NONE;
             } else {
                 this.propertyDisplay = propertyDisplay;
-            };
+            }
         },
 
         displaySelectedProperty:function() {
@@ -449,7 +449,7 @@ define(['exports', 'underscore', 'cocos2d', 'toollayer', 'qlayer', 'angle', 'ban
                 case PropertyDisplays.PARALLEL_SIDES:
                     this.geoboard.displayParallelSides(true);
                     this.selectButton(this.showParallelSidesButton);
-                    break;                
+                    break;
             }
         },
 
@@ -508,13 +508,13 @@ define(['exports', 'underscore', 'cocos2d', 'toollayer', 'qlayer', 'angle', 'ban
                     bandSelectButton = this.selectBandButtons[i];
                 } else {
                     bandSelectButton = cc.MenuItemImage.create(s_empty_select_band_button, s_empty_select_band_button, 'noop', this);
-                };
+                }
                 bandSelectButton.selectedSprite = null;
                 this.selectBandMenu.addChild(bandSelectButton);
                 var xPosition = 0 + 70 * i;
                 var yPosition = 0;
                 bandSelectButton.setPosition(xPosition, yPosition);
-            };
+            }
         },
 
         setRegularIndicatorWith:function(string) {
@@ -523,7 +523,7 @@ define(['exports', 'underscore', 'cocos2d', 'toollayer', 'qlayer', 'angle', 'ban
                 regularButton.label.setString(string);
             } else {
                 regularButton.label.setString("Regular?");
-            };
+            }
         },
 
         setShapeIndicatorWith:function(string) {
@@ -532,25 +532,25 @@ define(['exports', 'underscore', 'cocos2d', 'toollayer', 'qlayer', 'angle', 'ban
                 shapeButton.label.setString(string);
             } else {
                 shapeButton.label.setString("Shape");
-            };
+            }
         },
 
         setPerimeterIndicatorWith:function(perimeter) {
             var perimeterButton = this.getControl(constants.PROPERTY_BUTTON_PREFIX + 'perimeterButton');
-            if (this.propertyDisplay === PropertyDisplays.PERIMETER) {    
+            if (this.propertyDisplay === PropertyDisplays.PERIMETER) {
                 var string = "";
                 if (perimeter !== null) {
                     string = (Math.round(perimeter * 10000)/10000).toString();
-                };
+                }
                 perimeterButton.label.setString(string);
             } else {
                 perimeterButton.label.setString("Perimeter");
-            };
+            }
         },
 
         setAreaIndicatorWith:function(area) {
             var areaButton = this.getControl(constants.PROPERTY_BUTTON_PREFIX + 'areaButton');
-            if (this.propertyDisplay === PropertyDisplays.AREA) {        
+            if (this.propertyDisplay === PropertyDisplays.AREA) {
                 var string = "";
                 if (area !== null) {
                     string = (Math.round(area * 10000)/10000).toString();
@@ -558,7 +558,7 @@ define(['exports', 'underscore', 'cocos2d', 'toollayer', 'qlayer', 'angle', 'ban
                 areaButton.label.setString(string);
             } else {
                 areaButton.label.setString("Area");
-            };
+            }
         },
 
         clearBandSelectButtons:function() {
@@ -596,7 +596,7 @@ define(['exports', 'underscore', 'cocos2d', 'toollayer', 'qlayer', 'angle', 'ban
                 if (button.selectedSprite !== null) {
                     button.selectedSprite.removeFromParent();
                     button.selectedSprite = null;
-                };
+                }
                 if (button.band === band) {
                     var selectedSprite = new cc.Sprite();
                     selectedSprite.initWithFile(s_band_selected);
@@ -604,8 +604,8 @@ define(['exports', 'underscore', 'cocos2d', 'toollayer', 'qlayer', 'angle', 'ban
                     selectedSprite.setScale(1.1);
                     button.selectedSprite = selectedSprite;
                     button.addChild(selectedSprite);
-                };
-            };
+                }
+            }
         },
 
         setQuestion: function (question) {
