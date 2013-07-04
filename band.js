@@ -373,7 +373,7 @@ define(['angle', 'bandpart', 'geoboard', 'pin', 'moving-pin', 'noshadow-pin', 'c
                 var label = cc.LabelTTF.create("", "mikadoBold", 20);
                 //label.setColor(cc.c4f(255,255,255,1));
                 var labelBackground = new cc.Sprite();
-                labelBackground.initWithFile(s_side_length_background);
+                labelBackground.initWithFile(bl.resources['images_geoboard_label_panel']);
                 labelBackground.setColor(this.colour);
                 this.sideLengthsLabels.push(label);
                 label.setPosition(labelBackground.getContentSize().width * labelBackground.getScaleX()/2,

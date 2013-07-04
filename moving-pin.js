@@ -3,7 +3,7 @@ define([], function () {
 
     function MovingPin() {
         this.sprite = new cc.Sprite();
-        this.sprite.initWithFile(s_moving_pin);
+        this.sprite.initWithFile(bl.resources['images_geoboard_hand_up']);
         this.sprite.setAnchorPoint(cc.p(0.63, 0.88));
     }
 

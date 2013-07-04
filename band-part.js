@@ -4,7 +4,7 @@ define(['pin', 'moving-pin', 'noshadow-pin'], function (Pin, MovingPin, NoShadow
     function BandPart() {
         this.baseNode = new cc.Node();
         this.sprite = new cc.Sprite();
-        this.sprite.initWithFile(s_bandPart);
+        this.sprite.initWithFile(bl.resources['images_geoboard_band_1_white']);
         this.sprite.setScaleX(1.5);
         this.bandPartNode = new cc.Node();
         this.sprite.setAnchorPoint(cc.p(0.5, 0));
@@ -76,7 +76,7 @@ define(['pin', 'moving-pin', 'noshadow-pin'], function (Pin, MovingPin, NoShadow
             var spacing = 8;
             for (var i = 1; i <= numberOfNotches; i++) {
                 var notch = new cc.Sprite();
-                notch.initWithFile(s_same_side_length_notch);
+                notch.initWithFile(bl.resources['images_geoboard_samesidelengthnotch']);
                 notch.setRotation(90);
                 var yPosition = this.indicatorYPosition(i, spacing);
                 notch.setPosition(0, yPosition);
@@ -91,7 +91,7 @@ define(['pin', 'moving-pin', 'noshadow-pin'], function (Pin, MovingPin, NoShadow
             var spacing = 8;
             for (var i = 1; i <= numberOfArrows; i++) {
                 var arrow = new cc.Sprite();
-                arrow.initWithFile(s_parallel_side_arrow);
+                arrow.initWithFile(bl.resources['images_geoboard_parallelsidearrow']);
                 var rotation = forward ? 90 : -90;
                 arrow.setRotation(rotation);
                 arrow.setScale(0.5);

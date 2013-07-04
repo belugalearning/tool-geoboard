@@ -46,37 +46,37 @@ define(['exports', 'underscore', 'cocos2d', 'toollayer', 'qlayer', 'angle', 'ban
 
             var clc = cc.Layer.create();
             var background = new cc.Sprite();
-            background.initWithFile(s_deep_water_background);
+            background.initWithFile(bl.resources['images_deep_water_background']);
             background.setPosition(size.width/2, size.height/2);
             clc.addChild(background);
             this.addChild(clc,0);
 
             var title = new cc.Sprite();
-            title.initWithFile(s_geoboard_title);
+            title.initWithFile(bl.resources['images_geoboard_geoboard_title']);
             title.setPosition(485, 700);
             this.addChild(title);
 
             this.geoboard = new SquareGeoboard();
             this.setupGeoboard();
 
-            var squareGeoboardButtonBase = new cc.MenuItemImage.create(s_square_geoboard_button_base, s_square_geoboard_button_base, 'squareGeoboardTapped', this);
+            var squareGeoboardButtonBase = new cc.MenuItemImage.create(bl.resources['images_geoboard_squarepin_button_base'], bl.resources['images_geoboard_squarepin_button_base'], 'squareGeoboardTapped', this);
             var squareGeoboardButton = new cc.Sprite();
-            squareGeoboardButton.initWithFile(s_square_geoboard_button);
+            squareGeoboardButton.initWithFile(bl.resources['images_geoboard_squarepin_button']);
             squareGeoboardButton.setPosition(squareGeoboardButtonBase.getAnchorPointInPoints());
             squareGeoboardButtonBase.addChild(squareGeoboardButton);
             this.registerControl(constants.BOARD_BUTTON_PREFIX + 'squareGeoboardButton', squareGeoboardButtonBase);
 
-            var triangleGeoboardButtonBase = new cc.MenuItemImage.create(s_triangle_geoboard_button_base, s_triangle_geoboard_button_base, 'triangleGeoboardTapped', this);
+            var triangleGeoboardButtonBase = new cc.MenuItemImage.create(bl.resources['images_geoboard_isopin_button_base'], bl.resources['images_geoboard_isopin_button_base'], 'triangleGeoboardTapped', this);
             var triangleGeoboardButton = new cc.Sprite();
-            triangleGeoboardButton.initWithFile(s_triangle_geoboard_button);
+            triangleGeoboardButton.initWithFile(bl.resources['images_geoboard_isopin_button']);
             triangleGeoboardButton.setPosition(triangleGeoboardButtonBase.getAnchorPointInPoints());
             triangleGeoboardButtonBase.addChild(triangleGeoboardButton);
             triangleGeoboardButtonBase.setPosition(-15, -100);
             this.registerControl(constants.BOARD_BUTTON_PREFIX + 'triangleGeoboardButton', triangleGeoboardButtonBase);
 
-            var circleGeoboardButtonBase = new cc.MenuItemImage.create(s_circle_geoboard_button_base, s_circle_geoboard_button_base, 'circleGeoboardTapped', this);
+            var circleGeoboardButtonBase = new cc.MenuItemImage.create(bl.resources['images_geoboard_circlepin_button_base'], bl.resources['images_geoboard_circlepin_button_base'], 'circleGeoboardTapped', this);
             var circleGeoboardButton = new cc.Sprite();
-            circleGeoboardButton.initWithFile(s_circle_geoboard_button);
+            circleGeoboardButton.initWithFile(bl.resources['images_geoboard_circlepin_button']);
             circleGeoboardButton.setPosition(circleGeoboardButtonBase.getAnchorPointInPoints());
             circleGeoboardButtonBase.addChild(circleGeoboardButton);
             circleGeoboardButtonBase.setPosition(-15, -200);
@@ -86,14 +86,14 @@ define(['exports', 'underscore', 'cocos2d', 'toollayer', 'qlayer', 'angle', 'ban
             geoboardTypesMenu.setPosition(squareGeoboardButtonBase.getContentSize().width/2, 580);
             this.addChild(geoboardTypesMenu);
 
-            var centrePinButton = new cc.MenuItemImage.create(s_centre_pin_button, s_centre_pin_button, 'centrePinTapped', this);
+            var centrePinButton = new cc.MenuItemImage.create(bl.resources['images_geoboard_centrepoint_button'], bl.resources['images_geoboard_centrepoint_button'], 'centrePinTapped', this);
             centrePinButton.setPosition(0,0);
 
-            var removePinButton = new cc.MenuItemImage.create(s_remove_pin_button, s_remove_pin_button, 'removePinTapped', this);
+            var removePinButton = new cc.MenuItemImage.create(bl.resources['images_geoboard_arrow_down_button'], bl.resources['images_geoboard_arrow_down_button'], 'removePinTapped', this);
             removePinButton.setPosition(80, 0);
 
             var numberBox = new cc.Sprite();
-            numberBox.initWithFile(s_number_box);
+            numberBox.initWithFile(bl.resources['images_geoboard_number_box']);
             numberBox.setPosition(675, 390);
             this.numberOfPinsLabel = cc.LabelTTF.create(this.circleNumberOfPins, "mikadoBold", 24);
             var boxSize = numberBox.getContentSize();
@@ -101,7 +101,7 @@ define(['exports', 'underscore', 'cocos2d', 'toollayer', 'qlayer', 'angle', 'ban
             this.numberOfPinsLabel.setColor(cc.c3b(0,0,0));
             numberBox.addChild(this.numberOfPinsLabel);
 
-            var addPinButton = new cc.MenuItemImage.create(s_add_pin_button, s_add_pin_button, 'addPinTapped', this);
+            var addPinButton = new cc.MenuItemImage.create(bl.resources['images_geoboard_arrow_up_button'], bl.resources['images_geoboard_arrow_up_button'], 'addPinTapped', this);
             addPinButton.setPosition(250, 0);
 
 
@@ -114,17 +114,17 @@ define(['exports', 'underscore', 'cocos2d', 'toollayer', 'qlayer', 'angle', 'ban
             this.addChild(this.circleControlsNode);
 
 
-            var addBandButtonBase = new cc.MenuItemImage.create(s_add_band_button_base, s_add_band_button_base, 'addBandTapped', this);
+            var addBandButtonBase = new cc.MenuItemImage.create(bl.resources['images_geoboard_band_button_base'], bl.resources['images_geoboard_band_button_base'], 'addBandTapped', this);
             var addBandButton = new cc.Sprite();
-            addBandButton.initWithFile(s_add_band_button);
+            addBandButton.initWithFile(bl.resources['images_geoboard_band_button']);
             addBandButton.setPosition(addBandButtonBase.getAnchorPointInPoints());
             addBandButtonBase.setPosition(0, -125);
             addBandButtonBase.addChild(addBandButton);
             this.registerControl(constants.BAND_BUTTON_PREFIX + 'addBandButtonBase', addBandButtonBase);
 
-            var removeBandButtonBase = new cc.MenuItemImage.create(s_remove_band_button_base, s_remove_band_button_base, 'removeBandTapped', this);
+            var removeBandButtonBase = new cc.MenuItemImage.create(bl.resources['images_geoboard_trash_button_base'], bl.resources['images_geoboard_trash_button_base'], 'removeBandTapped', this);
             var removeBandButton = new cc.Sprite();
-            removeBandButton.initWithFile(s_remove_band_button);
+            removeBandButton.initWithFile(bl.resources['images_geoboard_trash_button']);
             removeBandButton.setPosition(removeBandButtonBase.getAnchorPointInPoints());
             removeBandButtonBase.setPosition(0, 10);
             removeBandButtonBase.addChild(removeBandButton);
@@ -199,7 +199,7 @@ define(['exports', 'underscore', 'cocos2d', 'toollayer', 'qlayer', 'angle', 'ban
 
         setupPropertyButton:function(selector, label) {
             var centreOfIndicator = cc.p(62, 35);
-            var button = cc.MenuItemImage.create(s_property_background, s_property_background, selector, this);
+            var button = cc.MenuItemImage.create(bl.resources['images_geoboard_info_side_button'], bl.resources['images_geoboard_info_side_button'], selector, this);
             button.label = new cc.LabelTTF.create(label, 'mikadoBold', 17, cc.SizeMake(110, 59), cc.TEXT_ALIGNMENT_CENTER, cc.VERTICAL_TEXT_ALIGNMENT_CENTER);
             button.label.setPosition(centreOfIndicator);
             button.label.setColor(cc.c3b(255,255,255));
@@ -347,7 +347,7 @@ define(['exports', 'underscore', 'cocos2d', 'toollayer', 'qlayer', 'angle', 'ban
         addBandTapped:function() {
             if (this.geoboard.bands.length < this.maxNumberOfBands) {
                 var band = this.geoboard.newBand();
-                var selectBandButton = new cc.MenuItemImage.create(s_select_band_button, s_select_band_button, "selectBandFromButton", this.geoboard);
+                var selectBandButton = new cc.MenuItemImage.create(bl.resources['images_geoboard_colour_select'], bl.resources['images_geoboard_colour_select'], "selectBandFromButton", this.geoboard);
                 selectBandButton.band = band;
                 selectBandButton.setColor(band.colour);
                 this.addSelectBandButton(selectBandButton);
@@ -507,7 +507,7 @@ define(['exports', 'underscore', 'cocos2d', 'toollayer', 'qlayer', 'angle', 'ban
                 if (i < numberOfButtons) {
                     bandSelectButton = this.selectBandButtons[i];
                 } else {
-                    bandSelectButton = cc.MenuItemImage.create(s_empty_select_band_button, s_empty_select_band_button, 'noop', this);
+                    bandSelectButton = cc.MenuItemImage.create(bl.resources['images_geoboard_colour_box_empty'], bl.resources['images_geoboard_colour_box_empty'], 'noop', this);
                 }
                 bandSelectButton.selectedSprite = null;
                 this.selectBandMenu.addChild(bandSelectButton);
@@ -599,7 +599,7 @@ define(['exports', 'underscore', 'cocos2d', 'toollayer', 'qlayer', 'angle', 'ban
                 }
                 if (button.band === band) {
                     var selectedSprite = new cc.Sprite();
-                    selectedSprite.initWithFile(s_band_selected);
+                    selectedSprite.initWithFile(bl.resources['images_geoboard_colour_selected']);
                     selectedSprite.setPosition(button.getAnchorPointInPoints());
                     selectedSprite.setScale(1.1);
                     button.selectedSprite = selectedSprite;

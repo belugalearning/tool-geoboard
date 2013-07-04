@@ -3,7 +3,7 @@ define([], function () {
 
     function NoShadowPin() {
         this.sprite = new cc.Sprite();
-        this.sprite.initWithFile(s_pin_no_shadow);
+        this.sprite.initWithFile(bl.resources['images_geoboard_pin_white_noshadow']);
         this.sprite.setAnchorPoint(cc.p(0.5, 0.45));
     }
 
