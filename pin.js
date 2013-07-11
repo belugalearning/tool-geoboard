@@ -3,7 +3,7 @@ define([], function () {
 
     function Pin() {
         this.sprite = new cc.Sprite();
-        this.sprite.initWithFile(bl.resources['images_geoboard_pin_white']);
+        this.sprite.initWithFile(window.bl.getResource('pin_white'));
 
         this.highlightPin = function(highlight) {
             if (highlight) {
@@ -14,7 +14,7 @@ define([], function () {
                 var highlightColour = cc.c3b(233, 142, 51);
                 this.sprite.setColor(highlightColour);
             } else {
-                var pinTexture = cc.TextureCache.getInstance().textureForKey(cc.FileUtils.getInstance().fullPathForFilename(bl.resources['images_geoboard_pin_white']));
+                var pinTexture = cc.TextureCache.getInstance().textureForKey(cc.FileUtils.getInstance().fullPathForFilename(window.bl.getResource('pin_white')));
                 this.sprite.setTexture(pinTexture);
                 var unHighlightColour = cc.c3b(255,255,255);
                 this.sprite.setColor(unHighlightColour);

@@ -13,7 +13,7 @@ define(['cocos2d'], function (cc) {
         init:function() {
             this._super();
             this.background = new cc.Sprite()
-            this.background.initWithFile(bl.resources['images_geoboard_label_panel']);
+            this.background.initWithFile(window.bl.getResource('label_panel'));
             this.addChild(this.background);
             this.label = cc.LabelTTF.create("", "mikadoBold", 15);
             this.label.setColor(cc.c4f(255,255,255,1));

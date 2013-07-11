@@ -63,7 +63,7 @@ define(['angle', 'bandpart', 'geoboard', 'pin', 'moving-pin', 'noshadow-pin', 'c
             } else if (this.pins.length === 1 && this.singleBandPart === null) {
                 var pin = this.pins[0];
                 this.singleBandPart = new cc.Sprite();
-                this.singleBandPart.initWithFile(bl.resources['images_geoboard_singlebandpart']);
+                this.singleBandPart.initWithFile(window.bl.getResource('singlebandpart'));
                 this.singleBandPart.setColor(this.colour);
                 // this.singleBandPart.setPosition(pin.sprite.getPosition());
                 this.singleBandPart.setPosition(cc.pAdd(pin.sprite.getPosition(), cc.p(0, 3)));
@@ -381,7 +381,7 @@ define(['angle', 'bandpart', 'geoboard', 'pin', 'moving-pin', 'noshadow-pin', 'c
                 var label = cc.LabelTTF.create("", "mikadoBold", 20);
                 //label.setColor(cc.c4f(255,255,255,1));
                 var labelBackground = new cc.Sprite();
-                labelBackground.initWithFile(bl.resources['images_geoboard_label_panel']);
+                labelBackground.initWithFile(window.bl.getResource('label_panel'));
                 labelBackground.setColor(this.colour);
                 this.sideLengthsLabels.push(label);
                 label.setPosition(labelBackground.getContentSize().width * labelBackground.getScaleX()/2,
