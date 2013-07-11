@@ -130,29 +130,43 @@ define(['pin', 'moving-pin', 'noshadow-pin'], function (Pin, MovingPin, NoShadow
             to point where the two lines cross (if they do), and returns true if lambda and mu are both between 0 and 1,
             i.e., the crossing point is between A and B on this bandPart, and C and D on other bandPart.
             */
-            var crosses;
+            var crosses = true;
             var pointA = this.fromPin.sprite.getPosition();
             var pointB = this.toPin.sprite.getPosition();
             var pointC = otherBandPart.fromPin.sprite.getPosition();
             var pointD = otherBandPart.toPin.sprite.getPosition();
 
-            var thisNumeratorFirst = (pointD.x - pointC.x) * (pointA.y - pointC.y);
-            var thisNumeratorSecond = (pointD.y - pointC.y) * (pointA.x - pointC.x);
-            var thisNumerator = thisNumeratorFirst - thisNumeratorSecond;
+            var firstArray = [pointA, pointB];
+            var secondArray = [pointC, pointD];
 
-            var otherNumeratorFirst = (pointC.x - pointA.x) * (pointB.y - pointA.y);
-            var otherNumeratorSecond = (pointC.y - pointA.y) * (pointB.x - pointA.x);
-            var otherNumerator = otherNumeratorFirst - otherNumeratorSecond;
+            for (var i = 0; i < firstArray.length; i++) {
+                for (var j = 0; j < secondArray.length; j++) {
+                    var distance = cc.pDistance(firstArray[i], secondArray[j]);
+                    if (distance < 0.0001) {
+                        crosses = false;
+                    };
+                };
+            };
 
-            var denominatorFirst = (pointD.y - pointC.y) * (pointB.x - pointA.x);
-            var denominatorSecond = (pointD.x - pointC.x) * (pointB.y - pointA.y);
-            var denominator = denominatorFirst - denominatorSecond;
-            if (denominator === 0) {
-                crosses = false;
-            } else {
-                var lambda= parseFloat(thisNumerator)/denominator;
-                var mu = parseFloat(otherNumerator)/denominator;
-                crosses = 0 < lambda && lambda < 1 && 0 < mu && mu < 1;
+            if (crosses) {            
+                var thisNumeratorFirst = (pointD.x - pointC.x) * (pointA.y - pointC.y);
+                var thisNumeratorSecond = (pointD.y - pointC.y) * (pointA.x - pointC.x);
+                var thisNumerator = thisNumeratorFirst - thisNumeratorSecond;
+
+                var otherNumeratorFirst = (pointC.x - pointA.x) * (pointB.y - pointA.y);
+                var otherNumeratorSecond = (pointC.y - pointA.y) * (pointB.x - pointA.x);
+                var otherNumerator = otherNumeratorFirst - otherNumeratorSecond;
+
+                var denominatorFirst = (pointD.y - pointC.y) * (pointB.x - pointA.x);
+                var denominatorSecond = (pointD.x - pointC.x) * (pointB.y - pointA.y);
+                var denominator = denominatorFirst - denominatorSecond;
+                if (denominator === 0) {
+                    crosses = false;
+                } else {
+                    var lambda= parseFloat(thisNumerator)/denominator;
+                    var mu = parseFloat(otherNumerator)/denominator;
+                    crosses = 0.0001 < lambda && lambda < 0.9999 && 0.0001 < mu && mu < 0.9999;
+                };
             };
             return crosses;
         }

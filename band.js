@@ -63,11 +63,14 @@ define(['angle', 'bandpart', 'geoboard', 'pin', 'moving-pin', 'noshadow-pin', 'c
             } else if (this.pins.length === 1 && this.singleBandPart === null) {
                 var pin = this.pins[0];
                 this.singleBandPart = new cc.Sprite();
-                this.singleBandPart.initWithFile(s_single_band_part);
+                this.singleBandPart.initWithFile(bl.resources['images_geoboard_singlebandpart']);
                 this.singleBandPart.setColor(this.colour);
                 // this.singleBandPart.setPosition(pin.sprite.getPosition());
                 this.singleBandPart.setPosition(cc.pAdd(pin.sprite.getPosition(), cc.p(0, 3)));
                 this.bandNode.addChild(this.singleBandPart);
+                var bandPart = new BandPart();
+                bandPart.setup(this, pin, pin);
+                this.bandParts.push(bandPart);
                 var dummyPin = new NoShadowPin();
                 dummyPin.sprite.setPosition(this.singleBandPart.getAnchorPointInPoints());
                 this.singleBandPart.addChild(dummyPin.sprite);
@@ -229,8 +232,11 @@ define(['angle', 'bandpart', 'geoboard', 'pin', 'moving-pin', 'noshadow-pin', 'c
                 for (var i = 0; i < this.pins.length; i++) {
                     var currentPin = this.pins[i];
                     var nextPin = this.pins[(i+1) % this.pins.length];
-                    if (currentPin == nextPin) {
+                    if (currentPin === nextPin) {
                         repeatPinsIndexes.push(i);
+                        if (this.pins.length === 2) {
+                            break;
+                        };
                     };
                 };
                 for (var i = repeatPinsIndexes.length - 1; i >= 0; i--) {
@@ -239,14 +245,16 @@ define(['angle', 'bandpart', 'geoboard', 'pin', 'moving-pin', 'noshadow-pin', 'c
                 this.setupBandParts();
                 this.setupAngles();
 
-                var indexOfStraightThroughPin = this.indexOfStraightThroughPin();
-                while (indexOfStraightThroughPin != -1) {
-                    var pin = this.pins[indexOfStraightThroughPin];
-                    this.pins.splice(indexOfStraightThroughPin, 1);
-                    this.setupBandParts();
-                    this.setupAngles();
-                    indexOfStraightThroughPin = this.indexOfStraightThroughPin();
-                }
+                if (this.pins.length !== 1) {
+                    var indexOfStraightThroughPin = this.indexOfStraightThroughPin();
+                    while (indexOfStraightThroughPin != -1) {
+                        var pin = this.pins[indexOfStraightThroughPin];
+                        this.pins.splice(indexOfStraightThroughPin, 1);
+                        this.setupBandParts();
+                        this.setupAngles();
+                        indexOfStraightThroughPin = this.indexOfStraightThroughPin();
+                    }
+                };
             };
         }
 
@@ -669,29 +677,64 @@ define(['angle', 'bandpart', 'geoboard', 'pin', 'moving-pin', 'noshadow-pin', 'c
         }
 
         this.pointInsideBand = function(point) {
-            var dummyPinStart = new Pin();
-            dummyPinStart.sprite.setPosition(point);
-            var dummyPinEnd = new Pin();
-            dummyPinEnd.sprite.setPosition(point.x, point.y + 1000);
-            var bandPartUp = new BandPart();
-            bandPartUp.fromPin = dummyPinStart;
-            bandPartUp.toPin = dummyPinEnd;
-            var numberOfCrossings = 0;
-            for (var i = 0; i < this.bandParts.length; i++) {
-                var bandPart = this.bandParts[i];
-                if (bandPart.crosses(bandPartUp)) {
-                    numberOfCrossings += 1;
+            var inside = this.pointOnBand(point);
+            if (!inside) {
+                var dummyPinStart = new Pin();
+                dummyPinStart.sprite.setPosition(point);
+                var dummyPinEnd = new Pin();
+                dummyPinEnd.sprite.setPosition(point.x, point.y + 1000);
+                var bandPartUp = new BandPart();
+                bandPartUp.fromPin = dummyPinStart;
+                bandPartUp.toPin = dummyPinEnd;
+                var numberOfCrossings = 0;
+                for (var i = 0; i < this.pins.length; i++) {
+                    var pinPosition = this.pins[i].sprite.getPosition();
+                    if (Math.abs(pinPosition.x - point.x) < 0.0001 && pinPosition.y > point.y) {
+                        numberOfCrossings++;
+                    };
                 };
+                for (var i = 0; i < this.bandParts.length; i++) {
+                    var bandPart = this.bandParts[i];
+                    if (bandPart.crosses(bandPartUp)) {
+                        numberOfCrossings++;
+                    };
+                };
+                inside = (numberOfCrossings % 2) === 1;
             };
-            var inside = (numberOfCrossings % 2) === 1;
             return inside;
         };
+
+        this.pointOnBand = function(point) {
+            var onBand = false;
+            for (var i = 0; i < this.pins.length; i++) {
+                var pin = this.pins[i];
+                if (cc.pDistance(pin.sprite.getPosition(), point) < 0.0001) {
+                    onBand = true;
+                };
+            };
+            if (!onBand) {            
+                for (var i = 0; i < this.bandParts.length; i++) {
+                    var bandPart = this.bandParts[i];
+                    var firstXChange = point.x - bandPart.fromPin.sprite.getPosition().x;
+                    var firstYChange = point.y - bandPart.fromPin.sprite.getPosition().y;
+                    var secondXChange = bandPart.toPin.sprite.getPosition().x - point.x;
+                    var secondYChange = bandPart.toPin.sprite.getPosition().y - point.y;
+                    var sameGradients = Math.abs(firstXChange * secondYChange - firstYChange * secondXChange) < 0.0001;
+                    var sameDirection = firstXChange.sign() === secondXChange.sign() && firstYChange.sign() === secondYChange.sign();
+                    if (sameGradients && sameDirection) {
+                        onBand = true;
+                    };
+                };
+            };
+            return onBand;
+        }
 
         this.areaOfEar = function(index) {
             var fromPart = this.bandParts.indexWraparound(index - 1);
             var toPart = this.bandParts[index];
             var angle = this.angles[index];
             var area = 1/2 * fromPart.length() * toPart.length() * Math.sin(angle.throughAngle);
+            area = Math.abs(area);
             return area;
         }
 
