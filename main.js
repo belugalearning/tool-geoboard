@@ -417,37 +417,37 @@ define(['exports', 'underscore', 'cocos2d', 'toollayer', 'qlayer', 'angle', 'ban
                     this.deselectAllButtons();
                     break;
                 case PropertyDisplays.REGULAR:
-                    this.selectButton(this.regularButton);
+                    this.selectButton(this.getControl(constants.PROPERTY_BUTTON_PREFIX + 'regularButton'));
                     break;
                 case PropertyDisplays.SHAPE:
-                    this.selectButton(this.shapeButton);
+                    this.selectButton(this.getControl(constants.PROPERTY_BUTTON_PREFIX + 'shapeButton'));
                     break;
                 case PropertyDisplays.PERIMETER:
-                    this.selectButton(this.perimeterButton);
+                    this.selectButton(this.getControl(constants.PROPERTY_BUTTON_PREFIX + 'perimeterButton'));
                     break;
                 case PropertyDisplays.AREA:
                     this.geoboard.displayArea(true);
-                    this.selectButton(this.areaButton);
+                    this.selectButton(this.getControl(constants.PROPERTY_BUTTON_PREFIX + 'areaButton'));
                     break;
                 case PropertyDisplays.ANGLES:
                     this.geoboard.displayAngles(true);
-                    this.selectButton(this.showAngleButton);
+                    this.selectButton(this.getControl(constants.PROPERTY_BUTTON_PREFIX + 'showAngleButton'));
                     break;
                 case PropertyDisplays.SAME_ANGLES:
                     this.geoboard.displaySameAngles(true);
-                    this.selectButton(this.showSameAnglesButton);
+                    this.selectButton(this.getControl(constants.PROPERTY_BUTTON_PREFIX + 'showSameAnglesButton'));
                     break;
                 case PropertyDisplays.SIDE_LENGTHS:
                     this.geoboard.displaySideLengths(true);
-                    this.selectButton(this.showSideLengthsButton);
+                    this.selectButton(this.getControl(constants.PROPERTY_BUTTON_PREFIX + 'showSideLengthsButton'));
                     break;
                 case PropertyDisplays.SAME_SIDE_LENGTHS:
                     this.geoboard.displaySameSideLengths(true);
-                    this.selectButton(this.showSameSideLengthsButton);
+                    this.selectButton(this.getControl(constants.PROPERTY_BUTTON_PREFIX + 'showSameSideLengthsButton'));
                     break;
                 case PropertyDisplays.PARALLEL_SIDES:
                     this.geoboard.displayParallelSides(true);
-                    this.selectButton(this.showParallelSidesButton);
+                    this.selectButton(this.getControl(constants.PROPERTY_BUTTON_PREFIX + 'showParallelSidesButton'));
                     break;
             }
         },
