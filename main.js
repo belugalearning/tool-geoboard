@@ -51,11 +51,6 @@ define(['exports', 'underscore', 'cocos2d', 'toollayer', 'qlayer', 'angle', 'ban
             clc.addChild(background);
             this.addChild(clc,0);
 
-            var title = new cc.Sprite();
-            title.initWithFile(window.bl.getResource('geoboard_title'));
-            title.setPosition(485, 700);
-            this.addChild(title);
-
             this.geoboard = new SquareGeoboard();
             this.setupGeoboard();
 
@@ -136,7 +131,7 @@ define(['exports', 'underscore', 'cocos2d', 'toollayer', 'qlayer', 'angle', 'ban
             this.registerControl(constants.BAND_BUTTON_PREFIX + 'addRemoveBandMenu', addRemoveBandMenu);
 
             this.selectBandMenu = new cc.Menu.create();
-            this.selectBandMenu.setPosition(210, 600);
+            this.selectBandMenu.setPosition(210, 700);
             this.addChild(this.selectBandMenu);
             this.selectBandButtons = [];
             this.positionBandSelectButtons();
@@ -213,7 +208,7 @@ define(['exports', 'underscore', 'cocos2d', 'toollayer', 'qlayer', 'angle', 'ban
 
         setupGeoboard:function (touches, event) {
             var size = cc.Director.getInstance().getWinSize();
-            this.geoboard.background.setPosition(size.width/2, size.height * 0.4);
+            this.geoboard.background.setPosition(size.width/2, size.height/2);
             this.addChild(this.geoboard.background);
             this.geoboard.layer = this;
             this.geoboard.setupPins();
